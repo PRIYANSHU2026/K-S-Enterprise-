@@ -20,7 +20,8 @@ export function Footer() {
                   src="https://ext.same-assets.com/3095408095/1636527971.png"
                   alt="K&S Enterprises"
                   fill
-                  className="object-contain brightness-0 invert"
+                  className="object-contain"
+                  priority
                 />
               </div>
             </Link>
