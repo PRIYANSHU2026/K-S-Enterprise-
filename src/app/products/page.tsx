@@ -2,30 +2,30 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ChevronRight, Filter } from "lucide-react";
+import { ChevronRight, Filter, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { products, categories } from "@/lib/data";
+import { categories } from "@/lib/data";
 import { ProductCard } from "@/components/products/ProductCard";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import Link from "next/link";
+import useCatalog from "@/lib/useCatalog";
 
 export default function ProductsPage() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState<string | null>(null);
 
-  // Filter products based on selected category and subcategory
-  const filteredProducts = products.filter((product) => {
-    if (!selectedCategory) return true;
-    if (selectedCategory && !selectedSubcategory) {
-      return product.category === categories.find(c => c.id === selectedCategory)?.name;
-    }
-    return (
-      product.category === categories.find(c => c.id === selectedCategory)?.name &&
-      product.subcategory === categories
-        .find(c => c.id === selectedCategory)?.subcategories
-        .find(s => s.id === selectedSubcategory)?.name
-    );
+  // Use the catalog hook to fetch products
+  const { products: catalogProducts, loading, error, refetch } = useCatalog({
+    category: selectedCategory
+      ? categories.find(c => c.id === selectedCategory)?.name
+      : undefined,
+    subcategory: selectedSubcategory
+      ? categories.find(c => c.id === selectedCategory)?.subcategories.find(s => s.id === selectedSubcategory)?.name
+      : undefined
   });
+
+  // Filter products based on selected category and subcategory
+  const filteredProducts = catalogProducts;
 
   // Reset filters
   const resetFilters = () => {
@@ -163,7 +163,24 @@ export default function ProductsPage() {
               </div>
             </div>
 
-            {filteredProducts.length > 0 ? (
+            {loading ? (
+              <div className="flex justify-center items-center py-20">
+                <Loader2 className="h-8 w-8 animate-spin text-red-600" />
+                <span className="ml-2 text-gray-600">Loading products...</span>
+              </div>
+            ) : error ? (
+              <div className="text-center py-12 bg-gray-50 rounded-lg">
+                <h3 className="text-lg font-medium text-gray-900">Error loading products</h3>
+                <p className="mt-2 text-gray-500">{error}</p>
+                <Button
+                  variant="outline"
+                  className="mt-4"
+                  onClick={() => refetch()}
+                >
+                  Try Again
+                </Button>
+              </div>
+            ) : filteredProducts.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredProducts.map((product, index) => (
                   <motion.div

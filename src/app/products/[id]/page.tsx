@@ -1,37 +1,84 @@
+"use client";
+
+import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { ChevronRight, Info, Star, Truck } from "lucide-react";
+import { notFound, useParams } from "next/navigation";
+import { ChevronRight, Info, Loader2, Star, Truck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
 import { products } from "@/lib/data";
 import { formatPrice } from "@/lib/utils";
+import useCatalog from "@/lib/useCatalog";
 
-export function generateStaticParams() {
-  return products.map((product) => ({
-    id: product.id,
-  }));
-}
+// This is no longer needed with client-side data fetching
+// export function generateStaticParams() {
+//   return products.map((product) => ({
+//     id: product.id,
+//   }));
+// }
 
-interface ProductPageProps {
-  params: {
-    id: string;
-  };
-}
+export default function ProductPage() {
+  const params = useParams();
+  const id = params.id as string;
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
-export default function ProductPage({ params }: ProductPageProps) {
-  const product = products.find((p) => p.id === params.id);
+  // Fetch product details using the catalog hook
+  const { product, loading, error, products: allProducts } = useCatalog({
+    id,
+    fallbackToLocal: true
+  });
 
-  // If product not found, return 404
-  if (!product) {
+  // If product not found and not loading, return 404
+  if (!loading && !product && !error) {
     notFound();
   }
 
   // Get related products (same category, excluding current product)
-  const relatedProducts = products
-    .filter((p) => p.category === product.category && p.id !== product.id)
-    .slice(0, 4);
+  const relatedProducts = allProducts.length > 0
+    ? allProducts
+        .filter((p) => product && p.category === product.category && p.id !== id)
+        .slice(0, 4)
+    : products
+        .filter((p) => product && p.category === product.category && p.id !== id)
+        .slice(0, 4);
+
+  // Loading state
+  if (loading) {
+    return (
+      <div className="py-8 md:py-12">
+        <div className="container mx-auto px-4 flex justify-center items-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-red-600" />
+          <span className="ml-2 text-gray-600">Loading product details...</span>
+        </div>
+      </div>
+    );
+  }
+
+  // Error state
+  if (error) {
+    return (
+      <div className="py-8 md:py-12">
+        <div className="container mx-auto px-4">
+          <div className="text-center py-12 bg-gray-50 rounded-lg">
+            <h3 className="text-lg font-medium text-gray-900">Error loading product</h3>
+            <p className="mt-2 text-gray-500">{error}</p>
+            <Button
+              variant="outline"
+              className="mt-4"
+              onClick={() => window.location.reload()}
+            >
+              Try Again
+            </Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // If we've reached this point, we should have a product
+  if (!product) return null;
 
   return (
     <div className="py-8 md:py-12">
@@ -54,7 +101,7 @@ export default function ProductPage({ params }: ProductPageProps) {
           <div className="lg:w-1/2">
             <div className="relative aspect-square border rounded-lg overflow-hidden bg-white">
               <Image
-                src={product.images[0]}
+                src={product.images[activeImageIndex]}
                 alt={product.name}
                 fill
                 className="object-contain p-8"
@@ -68,7 +115,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                 {product.images.map((image, index) => (
                   <div
                     key={`thumb-${index}`}
-                    className="relative h-20 w-20 border rounded-md overflow-hidden border-gray-200"
+                    className={`relative h-20 w-20 border rounded-md overflow-hidden cursor-pointer ${
+                      activeImageIndex === index ? 'border-red-600 ring-2 ring-red-200' : 'border-gray-200'
+                    }`}
+                    onClick={() => setActiveImageIndex(index)}
                   >
                     <Image
                       src={image}
@@ -128,8 +178,17 @@ export default function ProductPage({ params }: ProductPageProps) {
               {/* Availability and Shipping */}
               <div className="flex flex-col gap-3 mb-6">
                 <div className="flex items-center gap-2 text-sm">
-                  <div className="h-4 w-4 rounded-full bg-green-500" />
-                  <span className="font-medium text-green-700">In Stock</span>
+                  {product.inStock ? (
+                    <>
+                      <div className="h-4 w-4 rounded-full bg-green-500" />
+                      <span className="font-medium text-green-700">In Stock</span>
+                    </>
+                  ) : (
+                    <>
+                      <div className="h-4 w-4 rounded-full bg-red-500" />
+                      <span className="font-medium text-red-700">Out of Stock</span>
+                    </>
+                  )}
                 </div>
                 <div className="flex items-center gap-2 text-sm text-gray-600">
                   <Truck className="h-4 w-4 text-gray-500" />
