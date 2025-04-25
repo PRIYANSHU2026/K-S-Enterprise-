@@ -2,6 +2,15 @@ import type { Product, Category, BannerSlide } from './types';
 
 export const categories: Category[] = [
   {
+    id: "robotic-lawn-mower",
+    name: "Robotic Lawn Mower",
+    subcategories: [
+      { id: "robotic-mowers", name: "Robotic Mowers", categoryId: "robotic-lawn-mower" },
+      { id: "accessories", name: "Accessories & Parts", categoryId: "robotic-lawn-mower" },
+      { id: "installation", name: "Installation Kits", categoryId: "robotic-lawn-mower" },
+    ]
+  },
+  {
     id: "garden-tools",
     name: "Garden Tools",
     subcategories: [
@@ -20,14 +29,34 @@ export const categories: Category[] = [
     ]
   },
   {
-    id: "power-tools",
-    name: "Power Tools",
-    subcategories: []
+    id: "forest-tools",
+    name: "Forest Tools",
+    subcategories: [
+      { id: "chainsaws", name: "Professional Chainsaws", categoryId: "forest-tools" },
+      { id: "brush-cutters", name: "Heavy-Duty Brush Cutters", categoryId: "forest-tools" },
+      { id: "wood-chippers", name: "Wood Chippers & Shredders", categoryId: "forest-tools" },
+      { id: "log-splitters", name: "Log Splitters", categoryId: "forest-tools" },
+    ]
   },
   {
-    id: "robotic-lawn-mower",
-    name: "Robotic Lawn Mower",
-    subcategories: []
+    id: "maintenance-division",
+    name: "Maintenance Division",
+    subcategories: [
+      { id: "water-body", name: "Water Body Maintenance", categoryId: "maintenance-division" },
+      { id: "bio-lake", name: "Bio Lake Solutions", categoryId: "maintenance-division" },
+      { id: "pond-equipment", name: "Pond Equipment", categoryId: "maintenance-division" },
+      { id: "water-filtration", name: "Water Filtration Systems", categoryId: "maintenance-division" },
+    ]
+  },
+  {
+    id: "einhell-hub",
+    name: "Einhell Maintenance Hub",
+    subcategories: [
+      { id: "repair-services", name: "Repair Services", categoryId: "einhell-hub" },
+      { id: "spare-parts", name: "Spare Parts", categoryId: "einhell-hub" },
+      { id: "maintenance-kits", name: "Maintenance Kits", categoryId: "einhell-hub" },
+      { id: "tool-upgrades", name: "Tool Upgrades", categoryId: "einhell-hub" },
+    ]
   }
 ];
 
@@ -246,18 +275,34 @@ export const bannerSlides: BannerSlide[] = [
   },
   {
     id: "slide-2",
-    title: "Cordless Freedom",
-    description: "Experience the freedom of cordless operation with our high-performance battery-powered tools.",
-    imageUrl: "https://ext.same-assets.com/3095408095/3781870796.jpeg",
-    buttonText: "View Collection",
-    buttonUrl: "/products"
+    title: "Robotic Lawn Mower Division",
+    description: "Advanced robotic mowers for perfectly maintained lawns with minimal effort. Experience the future of lawn care.",
+    imageUrl: "https://ext.same-assets.com/797113633/3405095966.png",
+    buttonText: "Discover Robotic Mowers",
+    buttonUrl: "/category/robotic-lawn-mower"
   },
   {
     id: "slide-3",
-    title: "Premium Quality",
-    description: "Built to last with premium materials and advanced engineering for reliable everyday use.",
-    imageUrl: "https://ext.same-assets.com/3095408095/3677636569.jpeg",
-    buttonText: "Learn More",
-    buttonUrl: "/about"
+    title: "Forest Tools Division",
+    description: "Professional-grade tools for forestry and heavy-duty garden maintenance. Power and reliability for challenging tasks.",
+    imageUrl: "https://ext.same-assets.com/797113633/595163696.png",
+    buttonText: "Explore Forest Tools",
+    buttonUrl: "/category/forest-tools"
+  },
+  {
+    id: "slide-4",
+    title: "Water Body & Bio Lake Maintenance",
+    description: "Specialized solutions for maintaining water bodies and bio lakes with eco-friendly technologies.",
+    imageUrl: "https://ext.same-assets.com/797113633/2748826700.png",
+    buttonText: "View Maintenance Solutions",
+    buttonUrl: "/category/maintenance-division"
+  },
+  {
+    id: "slide-5",
+    title: "Einhell Maintenance Hub",
+    description: "Your one-stop solution for Einhell tool maintenance, repairs, and upgrades to keep your equipment in top condition.",
+    imageUrl: "https://ext.same-assets.com/797113633/1456128059.png",
+    buttonText: "Visit Maintenance Hub",
+    buttonUrl: "/category/einhell-hub"
   }
 ];

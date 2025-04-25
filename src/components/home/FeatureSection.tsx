@@ -1,38 +1,38 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Battery, Box, Leaf, Shield, Zap } from "lucide-react";
+import { Leaf, Zap, TreePine, Droplet, Wrench } from "lucide-react";
 
 const features = [
   {
-    id: "cordless",
-    title: "Cordless Freedom",
-    description: "Our cordless tools provide maximum mobility and convenience with long-lasting battery performance.",
-    icon: Battery,
-  },
-  {
-    id: "power",
-    title: "Professional Power",
-    description: "Experience professional-grade power and performance for demanding tasks in your garden.",
+    id: "robotic-mowers",
+    title: "Robotic Lawn Mower",
+    description: "Cutting-edge robotic technology for effortless lawn maintenance with precise results.",
     icon: Zap,
   },
   {
-    id: "eco",
-    title: "Eco-Friendly",
-    description: "Environmentally conscious tools with reduced emissions and energy-efficient operation.",
+    id: "garden-tools",
+    title: "Garden Tools",
+    description: "Professional garden tools for all your landscaping and maintenance needs.",
     icon: Leaf,
   },
   {
-    id: "warranty",
-    title: "Extended Warranty",
-    description: "Our products come with extended warranty and reliable after-sales support.",
-    icon: Shield,
+    id: "forest-tools",
+    title: "Forest Tools",
+    description: "Heavy-duty equipment for forestry work and challenging landscape management.",
+    icon: TreePine,
   },
   {
-    id: "kit",
-    title: "Complete Kits",
-    description: "Get everything you need with our comprehensive tool kits and accessories.",
-    icon: Box,
+    id: "maintenance",
+    title: "Water & Bio Lake",
+    description: "Specialized solutions for water body maintenance and eco-friendly bio lake systems.",
+    icon: Droplet,
+  },
+  {
+    id: "einhell-hub",
+    title: "Einhell Maintenance Hub",
+    description: "Complete service center for repairs, maintenance and upgrades of your tools.",
+    icon: Wrench,
   },
 ];
 
@@ -47,9 +47,9 @@ export function FeatureSection() {
           transition={{ duration: 0.5 }}
           className="text-center mb-12"
         >
-          <h2 className="text-3xl font-bold">Why Choose Our Products</h2>
+          <h2 className="text-3xl font-bold">Our Specialized Divisions</h2>
           <p className="mt-2 max-w-2xl mx-auto text-red-100">
-            Discover the advantages of K&S Enterprises garden and power tools
+            K&S Enterprises offers comprehensive solutions across five specialized divisions
           </p>
         </motion.div>
 
