@@ -1,7 +1,13 @@
 import { redirect } from 'next/navigation';
 import { categories } from '@/lib/data';
 
-export default function CategoryPage({ params }: { params: { id: string } }) {
+type CategoryPageProps = {
+  params: {
+    id: string;
+  };
+};
+
+export default function CategoryPage({ params }: CategoryPageProps) {
   const category = categories.find((cat) => cat.id === params.id);
 
   if (!category) {
@@ -11,15 +17,15 @@ export default function CategoryPage({ params }: { params: { id: string } }) {
   // Redirect to the appropriate division page based on the category ID
   switch (params.id) {
     case 'robotic-lawn-mower':
-      redirect('/category/robotic-lawn-mower');
+      return redirect('/category/robotic-lawn-mower');
     case 'garden-tools':
-      redirect('/category/garden-tools');
+      return redirect('/category/garden-tools');
     case 'forest-tools':
-      redirect('/category/forest-tools');
+      return redirect('/category/forest-tools');
     case 'maintenance-division':
-      redirect('/category/maintenance-division');
+      return redirect('/category/maintenance-division');
     case 'einhell-hub':
-      redirect('/category/einhell-hub');
+      return redirect('/category/einhell-hub');
     default:
       return (
         <div className="container mx-auto py-12 px-4">
